@@ -3,15 +3,52 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Mail } from "lucide-react"
+import { Mail, Loader2, ArrowRight } from "lucide-react"
 
 export function Waitlist() {
   const [email, setEmail] = useState("")
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle waitlist signup
-    console.log("Waitlist signup:", email)
+    setStatus("loading")
+
+    try {
+      const response = await fetch(
+        "https://hook.eu2.make.com/vrl320fh29ll1imlaywdo2ary3tdn2uq",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ "email-waitlist": email }),
+        }
+      )
+
+      if (response.ok) {
+        setStatus("success")
+        setEmail("")
+      } else {
+        setStatus("error")
+      }
+    } catch {
+      setStatus("error")
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <section id="waitlist" className="bg-muted py-16 px-6">
+        <div className="max-w-xl mx-auto text-center space-y-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-green-600">
+            Sukces! 🤝
+          </h2>
+          <p className="text-lg">
+            Dziękujemy! Dodano Cię do listy oczekujących! 🎉 Sprawdź skrzynkę pocztową, czy otrzymałeś od nas wiadomość! 😊
+          </p>
+        </div>
+      </section>
+    )
   }
 
   return (
@@ -20,6 +57,14 @@ export function Waitlist() {
         <h2 className="text-2xl md:text-3xl font-bold">
           Dolacz do listy oczekujących!
         </h2>
+        {status === "error" && (
+          <div className="text-red-600 text-sm">
+            Błąd! 😢 Coś poszło nie tak podczas dołączania do listy oczekujących. Proszę spróbuj ponownie lub napisz do nas na adres{" "}
+            <a href="mailto:pomoc@ofertomatic.pl" className="underline">
+              pomoc@ofertomatic.pl
+            </a>
+          </div>
+        )}
         <form
           onSubmit={handleSubmit}
           className="flex flex-col sm:flex-row gap-3 justify-center"
@@ -33,10 +78,21 @@ export function Waitlist() {
               onChange={(e) => setEmail(e.target.value)}
               className="pl-10 h-12 bg-background"
               required
+              disabled={status === "loading"}
             />
           </div>
-          <Button type="submit" className="h-12 px-8 rounded-lg">
-            Dołączam
+          <Button type="submit" className="h-12 px-8 rounded-lg group" disabled={status === "loading"}>
+            {status === "loading" ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Wysyłanie...
+              </>
+            ) : (
+              <>
+                Dołączam
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </>
+            )}
           </Button>
         </form>
       </div>

@@ -3,15 +3,37 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Mail } from "lucide-react"
+import { Mail, Loader2, ArrowRight } from "lucide-react"
 
 export function Hero() {
   const [email, setEmail] = useState("")
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle waitlist signup
-    console.log("Waitlist signup:", email)
+    setStatus("loading")
+
+    try {
+      const response = await fetch(
+        "https://hook.eu2.make.com/vrl320fh29ll1imlaywdo2ary3tdn2uq",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ "email-waitlist": email }),
+        }
+      )
+
+      if (response.ok) {
+        setStatus("success")
+        setEmail("")
+      } else {
+        setStatus("error")
+      }
+    } catch {
+      setStatus("error")
+    }
   }
 
   return (
@@ -31,32 +53,60 @@ export function Hero() {
             rozliczenia i kontroluj zyski z precyzją. Dołącz teraz do listy
             oczekujących!
           </p>
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="flex gap-2 max-w-md">
-              <div className="relative flex-1">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="email"
-                  placeholder="twoj.adres@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 h-12"
-                  required
-                />
-              </div>
-              <Button type="submit" className="h-12 px-6 rounded-lg">
-                Dołączam
-              </Button>
+          {status === "success" ? (
+            <div className="max-w-md space-y-2">
+              <p className="text-green-600 font-bold text-lg">Sukces! 🤝</p>
+              <p className="text-sm">
+                Dziękujemy! Dodano Cię do listy oczekujących! 🎉 Sprawdź skrzynkę pocztową, czy otrzymałeś od nas wiadomość! 😊
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Kliknij, dołącz do listy oczekujących i zacznij rewolucję w swoim
-              biznesie – tym samym akceptując nasz{" "}
-              <a href="#" className="underline hover:text-foreground">
-                regulamin
-              </a>
-              .
-            </p>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-3">
+              {status === "error" && (
+                <div className="text-red-600 text-sm max-w-md">
+                  Błąd! 😢 Coś poszło nie tak podczas dołączania do listy oczekujących. Proszę spróbuj ponownie lub napisz do nas na adres{" "}
+                  <a href="mailto:pomoc@ofertomatic.pl" className="underline">
+                    pomoc@ofertomatic.pl
+                  </a>
+                </div>
+              )}
+              <div className="flex gap-2 max-w-md">
+                <div className="relative flex-1">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    type="email"
+                    placeholder="twoj.adres@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-10 h-12"
+                    required
+                    disabled={status === "loading"}
+                  />
+                </div>
+                <Button type="submit" className="h-12 px-6 rounded-lg group" disabled={status === "loading"}>
+                  {status === "loading" ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Wysyłanie...
+                    </>
+                  ) : (
+                    <>
+                      Dołączam
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </>
+                  )}
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Kliknij, dołącz do listy oczekujących i zacznij rewolucję w swoim
+                biznesie – tym samym akceptując nasz{" "}
+                <a href="#" className="underline hover:text-foreground">
+                  regulamin
+                </a>
+                .
+              </p>
+            </form>
+          )}
         </div>
         <div className="flex-1">
           <HeroIllustration />
