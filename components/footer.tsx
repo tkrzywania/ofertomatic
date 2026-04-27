@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export function Footer() {
   return (
     <footer className="px-6 py-12 max-w-6xl mx-auto">
@@ -5,23 +7,13 @@ export function Footer() {
         {/* Brand */}
         <div className="space-y-4 max-w-xs">
           <div className="flex items-center gap-2">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="text-foreground"
-            >
-              <circle cx="12" cy="6" r="2" fill="currentColor" />
-              <circle cx="6" cy="12" r="2" fill="currentColor" />
-              <circle cx="18" cy="12" r="2" fill="currentColor" />
-              <circle cx="12" cy="18" r="2" fill="currentColor" />
-              <path
-                d="M12 8v2M12 14v2M8 12h-2M16 12h2"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              />
-            </svg>
+            <img
+              src="/growth-icon.png"
+              alt="Ofertomatic logo"
+              width={24}
+              height={24}
+              className="dark:invert"
+            />
             <span className="font-semibold text-lg">Ofertomatic</span>
           </div>
           <p className="text-muted-foreground text-sm leading-relaxed">
@@ -36,19 +28,19 @@ export function Footer() {
           <h3 className="font-semibold">Informacje</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <a href="#" className="hover:text-foreground transition-colors">
+              <Link href="/regulamin" className="hover:text-foreground transition-colors">
                 Regulamin
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-foreground transition-colors">
+              <Link href="/polityka-prywatnosci" className="hover:text-foreground transition-colors">
                 Polityka Prywatności
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:text-foreground transition-colors">
+              <Link href="/polityka-google-api" className="hover:text-foreground transition-colors">
                 Polityka Usług API Google
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

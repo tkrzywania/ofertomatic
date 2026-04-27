@@ -100,7 +100,7 @@ export function Hero() {
               <p className="text-sm text-muted-foreground">
                 Kliknij, dołącz do listy oczekujących i zacznij rewolucję w swoim
                 biznesie – tym samym akceptując nasz{" "}
-                <a href="#" className="underline hover:text-foreground">
+                <a href="/regulamin" className="underline hover:text-foreground">
                   regulamin
                 </a>
                 .
