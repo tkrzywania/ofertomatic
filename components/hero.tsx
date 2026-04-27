@@ -40,7 +40,7 @@ export function Hero() {
     <section className="px-6 py-12 max-w-6xl mx-auto">
       <div className="flex flex-col lg:flex-row items-center gap-12">
         <div className="flex-1 space-y-6">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-balance">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-balance">
             Aplikacja do tworzenia wycen, rozliczeń powykonawczych i śledzenia
             zysków{" "}
             <span className="text-primary">
