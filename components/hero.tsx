@@ -22,7 +22,7 @@ export function Hero() {
             Aplikacja do tworzenia wycen, rozliczeń powykonawczych i śledzenia
             zysków{" "}
             <span className="text-primary">
-              w branżach elektrotechnicznej i HVAC
+              w branży Smart Home i elektrotechnicznej
             </span>
           </h1>
           <p className="text-muted-foreground text-lg max-w-xl">
