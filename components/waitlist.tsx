@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Mail, Loader2 } from "lucide-react"
+import { Mail, Loader2, ArrowRight } from "lucide-react"
 
 export function Waitlist() {
   const [email, setEmail] = useState("")
@@ -81,14 +81,17 @@ export function Waitlist() {
               disabled={status === "loading"}
             />
           </div>
-          <Button type="submit" className="h-12 px-8 rounded-lg" disabled={status === "loading"}>
+          <Button type="submit" className="h-12 px-8 rounded-lg group" disabled={status === "loading"}>
             {status === "loading" ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Wysyłanie...
               </>
             ) : (
-              "Dołączam"
+              <>
+                Dołączam
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </>
             )}
           </Button>
         </form>
